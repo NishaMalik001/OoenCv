@@ -56,13 +56,29 @@ while True:
 
     if hands:
         lmList = hands[0]['lmList']
-        cursor = lmList[8]
-        length = detector.findDistance(lmList[8], lmList[12], img)
-        info = detector.findDistance(lmList[8], lmList[12], img)
-        img = detector.findDistance(lmList[0], lmList[12], img)
+        # here you have three values corresponding to the x, y and z  
+        # The required values(location are x, and y) so we are getting those location(values) here.       
+        cursor = lmList[8][:2]
+        
+        # print(type(cursor[0]))
+        
+        # print(type(cursor))
+        # 
+        point1 =tuple(lmList[8][:2] )
+        # print(type(point1))
+        point2 =tuple(lmList[12][:2]) 
+        
+        # The findDistance function returns there values, 1 length, 2. info, 3. image(mat)
+        length, info, img = detector.findDistance(point1, point2, img)
+        length1, info, img = detector.findDistance(point1, point2, img)
+        length2, info, img = detector.findDistance(tuple(lmList[0][:2]), point2, img)
         if length > 60:
             mcq.update(cursor, [bbox1, bbox2, bbox3, bbox4])
             print("CLICKED")
 
     cv2.imshow('frame', img)
-    cv2.waitKey(1)
+    key =cv2.waitKey(1)
+    if key ==ord('q'):
+        break
+
+cv2.destroyAllWindows()
